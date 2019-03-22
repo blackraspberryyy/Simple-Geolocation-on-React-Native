@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import {
-  Platform,
   StyleSheet,
   Text,
   View,
   Alert,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from "react-native";
 
 export default class App extends Component {
@@ -13,7 +13,8 @@ export default class App extends Component {
     location: null,
     latitude: '',
     longitude: '',
-    msg: ''
+    msg: '',
+    saved: ''
   };
 
   findCoordinates = () => {
@@ -51,6 +52,17 @@ export default class App extends Component {
     })
   }
 
+  componentDidMount = () => {
+    AsyncStorage.getItem('address')
+      .then((value) => this.setState({ 'saved': value }))
+  }
+
+  saveToDb = () => {
+    console.log('Saving to db: ' +  this.state.msg)
+    AsyncStorage.setItem('address', this.state.msg);
+    console.log('Saved!')
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -62,7 +74,10 @@ export default class App extends Component {
           <Text style={styles.welcome}>Translate to Address</Text>
           <Text>Address: {this.state.msg}</Text>
         </TouchableOpacity>
-
+        <TouchableOpacity onPress={this.saveToDb}>
+          <Text style={styles.welcome}>Save this address</Text>
+          <Text>Saved: {this.state.saved}</Text>
+        </TouchableOpacity>
       </View>
     );
   }
