@@ -25,7 +25,7 @@ export default class App extends Component {
         this.setState({ location })
         console.log(this.state.latitude + ", " + this.state.longitude)
       },
-      error => console.error(error.message),
+      error => Alert.alert(error.message),
       { enableHighAccuracy: false, timeout: 5000, maximumAge: 10000 }
     )
   }
@@ -43,7 +43,7 @@ export default class App extends Component {
     })
     .catch((error) => {
       console.error(error);
-      throw error
+      Alert.alert(error)
     })
     .then((address) => {
       console.log(address)
